@@ -1,5 +1,5 @@
 import Bookshelf from "./Bookshelf"
-
+import {Link} from "react-router-dom"
 
 const BooksList = ({showSearchPage, setShowSearchpage}) => {
 return (
@@ -18,7 +18,7 @@ return (
       </div>
     </div>
     <div className="open-search">
-      <a href="/#" onClick={() => setShowSearchpage(!showSearchPage)}>Add a book</a>
+      <Link  to= "/search" >Add a book</Link>
     </div>
   </div>
 )

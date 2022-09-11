@@ -2,21 +2,26 @@ import "./App.css";
 import { useState } from "react";
 import SearchPage from "./components/SearchPage"
 import BooksList from "./components/BooksList"
+import { Routes, Route } from "react-router-dom";
 
 function App() {
   const [showSearchPage, setShowSearchpage] = useState(false);
 
-   const updateCurrentPage = () => {
+  const updateCurrentPage = () => {
     setShowSearchpage(!showSearchPage)
-   }
+  }
 
   return (
     <div className="app">
-      {showSearchPage ? 
-      <SearchPage showSearchPage={showSearchPage} setShowSearchpage= {updateCurrentPage} />
-       : 
-    <BooksList showSearchPage={showSearchPage} setShowSearchpage= {updateCurrentPage} />
-      }
+      <Routes>
+
+        <Route path="/" element={<BooksList />}></Route>
+        <Route path="/search" element={<SearchPage />}></Route>
+
+      </Routes>
+
+
+
     </div>
   );
 }
