@@ -5,23 +5,14 @@ import BooksList from "./components/BooksList"
 import { Routes, Route } from "react-router-dom";
 
 function App() {
-  const [showSearchPage, setShowSearchpage] = useState(false);
-
-  const updateCurrentPage = () => {
-    setShowSearchpage(!showSearchPage)
-  }
+  
 
   return (
     <div className="app">
       <Routes>
-
         <Route path="/" element={<BooksList />}></Route>
         <Route path="/search" element={<SearchPage />}></Route>
-
       </Routes>
-
-
-
     </div>
   );
 }

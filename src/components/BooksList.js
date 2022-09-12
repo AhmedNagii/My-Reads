@@ -1,7 +1,21 @@
 import Bookshelf from "./Bookshelf"
+import { useEffect, useState } from "react"
 import {Link} from "react-router-dom"
+import {getAll} from "../BooksAPI"
 
-const BooksList = ({showSearchPage, setShowSearchpage}) => {
+const BooksList = () => {
+
+const [allBooks , setAllBooks] = useState()
+
+  useEffect(() => {
+    const getAllBooks = async () => {
+      const res = await getAll()
+      setAllBooks(res)
+    }
+
+    getAllBooks()
+  }, []) 
+
 return (
     <div className="list-books">
     <div className="list-books-title">
