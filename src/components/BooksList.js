@@ -1,41 +1,51 @@
 import Bookshelf from "./Bookshelf"
-import { useEffect, useState } from "react"
-import {Link} from "react-router-dom"
-import {getAll} from "../BooksAPI"
+import { Link } from "react-router-dom"
 
-const BooksList = () => {
 
-const [allBooks , setAllBooks] = useState()
+const BooksList = ({ allBooks }) => {
 
-  useEffect(() => {
-    const getAllBooks = async () => {
-      const res = await getAll()
-      setAllBooks(res)
-    }
+  const currentlyReadingShelf = allBooks.filter(book => book.shelf === "currentlyReading")
+  const wantToReadShelf = allBooks.filter(book => book.shelf === "wantToRead")
+  const readShelf = allBooks.filter(book => book.shelf === "read")
 
-    getAllBooks()
-  }, []) 
+  const allShelfs = [
+    {
+      shelfData: currentlyReadingShelf,
+      shelfTitle: "currently Reading"
+    },
+    {
+      shelfData: wantToReadShelf,
+      shelfTitle: "Want to read"
+    },
+    {
+      shelfData: readShelf,
+      shelfTitle: "read"
+    }]
 
-return (
+  const creatBookShelfs = () => {
+    return allShelfs.map((shelf) => {
+      return <Bookshelf key={shelf.name} shelfData={shelf.shelfData} title={shelf.shelfTitle} />
+    })
+  }
+
+  return (
     <div className="list-books">
-    <div className="list-books-title">
-      <h1>MyReads</h1>
-    </div>
-    <div className="list-books-content">
-      <div>
-      
+      <div className="list-books-title">
+        <h1>MyReads</h1>
+      </div>
+      <div className="list-books-content">
+        <div>
 
-<Bookshelf/>
-<Bookshelf/>
-<Bookshelf/>
-   
+          {
+            creatBookShelfs()
+          }
+        </div>
+      </div>
+      <div className="open-search">
+        <Link to="/search" >Add a book</Link>
       </div>
     </div>
-    <div className="open-search">
-      <Link  to= "/search" >Add a book</Link>
-    </div>
-  </div>
-)
+  )
 }
 
 export default BooksList

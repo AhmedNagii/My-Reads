@@ -1,8 +1,8 @@
 import {Link } from "react-router-dom"
 
-const SearchPage = () => {
-   
 
+const SearchPage = ({allBooks}) => {
+   
     return (  <div className="search-books">
     <div className="search-books-bar">
       <Link
