@@ -175,3 +175,11 @@ body,
   text-align: center;
   font-size: 0.8em;
 }
+
+
+/* add to defults */
+
+.no-results{
+  text-align: center;
+  color: rgba(0, 0, 0, 0.349);
+}

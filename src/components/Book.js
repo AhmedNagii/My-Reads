@@ -1,10 +1,34 @@
 
+import PropTypes from "prop-types"
+import nocover from '../imgs/nocover.png';
+import { useState } from 'react';
 
-const Book = ({bookData}) => {
+const Book = ({ bookData, updateBookShelf }) => {
+  const [selectedOptions, setSelectedOptions] = useState();
+ 
 
-    return(
-        <li>
-        <div className="book">
+
+  const handleSelect = (event) => {
+    const selectedShelf = event.target.value
+    setSelectedOptions(selectedShelf);
+    updateBookShelf(bookData, selectedShelf)
+   
+    
+  }
+
+  const renderImage = () => {
+    const imageUrl = bookData.imageLinks.smallThumbnail;
+    if(imageUrl){
+      return imageUrl
+    }else{
+      return `${nocover}`
+    }
+  }
+
+
+  return (
+    <li>
+      <div className="book">
         <div className="book-top">
           <div
             className="book-cover"
@@ -12,14 +36,14 @@ const Book = ({bookData}) => {
               width: 128,
               height: 193,
               backgroundImage:
-                `URL(${bookData.imageLinks.smallThumbnail})`,
+                `URL(${renderImage()})`,
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select>
-              <option value="none" disabled>
-                Move to...
-              </option>
+            <select value={selectedOptions} onChange={handleSelect}>
+              <option value="none" disabled>Move to...</option>
+              <option value="none" disabled></option>
+            
               <option value="currentlyReading">
                 Currently Reading
               </option>
@@ -31,13 +55,17 @@ const Book = ({bookData}) => {
 
 
         </div>
-        
+
         <div className="book-title">{bookData.title}</div>
-        <div className="book-authors">{bookData.authors.join('')}</div>
+        <div className="book-authors">{bookData.authors}</div>
       </div>
-      </li>
-    )
+    </li>
+  )
 }
 
+Book.propTypes = {
+  bookData : PropTypes.object.isRequired,
+  updateBookShelf: PropTypes.func.isRequired
+}
 
 export default Book;

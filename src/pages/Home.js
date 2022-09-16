@@ -1,8 +1,8 @@
-import Bookshelf from "./Bookshelf"
+import Bookshelf from "../components/Bookshelf"
 import { Link } from "react-router-dom"
+import PropTypes from "prop-types"
 
-
-const BooksList = ({ allBooks }) => {
+const HomePage = ({ allBooks , updateBookShelf}) => {
 
   const currentlyReadingShelf = allBooks.filter(book => book.shelf === "currentlyReading")
   const wantToReadShelf = allBooks.filter(book => book.shelf === "wantToRead")
@@ -11,7 +11,7 @@ const BooksList = ({ allBooks }) => {
   const allShelfs = [
     {
       shelfData: currentlyReadingShelf,
-      shelfTitle: "currently Reading"
+      shelfTitle: "Currently Reading"
     },
     {
       shelfData: wantToReadShelf,
@@ -19,14 +19,10 @@ const BooksList = ({ allBooks }) => {
     },
     {
       shelfData: readShelf,
-      shelfTitle: "read"
+      shelfTitle: "Read"
     }]
 
-  const creatBookShelfs = () => {
-    return allShelfs.map((shelf) => {
-      return <Bookshelf key={shelf.name} shelfData={shelf.shelfData} title={shelf.shelfTitle} />
-    })
-  }
+
 
   return (
     <div className="list-books">
@@ -35,10 +31,13 @@ const BooksList = ({ allBooks }) => {
       </div>
       <div className="list-books-content">
         <div>
-
-          {
-            creatBookShelfs()
-          }
+          {allShelfs.map((shelf) => {
+            return <Bookshelf
+             key={shelf.shelfTitle}
+              shelfData={shelf.shelfData} 
+              title={shelf.shelfTitle}
+              updateBookShelf={updateBookShelf} />
+          })}
         </div>
       </div>
       <div className="open-search">
@@ -48,4 +47,10 @@ const BooksList = ({ allBooks }) => {
   )
 }
 
-export default BooksList
+
+HomePage.propTypes = {
+  allBooks: PropTypes.array.isRequired , 
+  updateBookShelf: PropTypes.func.isRequired
+}
+
+export default HomePage

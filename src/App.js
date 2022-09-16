@@ -1,32 +1,46 @@
 import "./App.css";
-import SearchPage from "./components/SearchPage"
-import BooksList from "./components/BooksList"
+import SearchPage from "./pages/SearchPage"
+import HomePage from "./pages/Home"
 import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react"
-import { getAll } from "./BooksAPI"
+import { getAll, update } from "./BooksAPI"
 
 function App() {
 
 
-const [allBooks, setAllBooks]  = useState([])
+  const [allBooks, setAllBooks] = useState([])
+
+  const chnageBookSgelf = async (bookToChange, shelf) => {
+    const hasTheBook = allBooks.some(book => book.id !== bookToChange.id)
+    if (hasTheBook) {
+      await update(bookToChange, shelf)
+    } else {
+      return;
+    }
+  }
 
   useEffect(() => {
     const getAllBooks = async () => {
       const res = await getAll()
       setAllBooks(res)
     }
-getAllBooks()
+    getAllBooks()
+
   })
+
+
 
   return (
     <div className="app">
       <Routes>
         <Route path="/" element={
-        <BooksList allBooks = {allBooks}
-         />}></Route>
-        <Route path="/search" 
-        element={<SearchPage allBooks = {allBooks}/>
-        }></Route>
+          <HomePage
+            allBooks={allBooks}
+            updateBookShelf={chnageBookSgelf}
+          />}></Route>
+        <Route path="/search"
+          element={<SearchPage updateBookShelf={chnageBookSgelf} />
+          }></Route>
       </Routes>
     </div>
   );
