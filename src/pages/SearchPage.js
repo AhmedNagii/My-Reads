@@ -12,38 +12,42 @@ const SearchPage = ({ updateBookShelf }) => {
   const [hasResult, setHasResult] = useState(false)
 
 
+  const userHint = userQuery === "" ? "Type something" : 'No results found'
 
-  const updateUserHints = () => {
-    const message = 
-    userQuery === "" || results.length === 0 ? "Type something" : 'No results found'
+  const updateUserHints = (message) => {
+   
+     
     return <h1 className="no-results">{message}</h1>
   }
 
 
 
   const updateResults = async (query) => {
-//if(query === "" || typeof query !== "string") return;
-
-    try {
-      const res = await search(query)
-      console.log(res)
-      if (res && res.length > 0) {
-        setResults(res)
-        setHasResult(true)
-      }
-      else  {
-        setHasResult(false)
-        setResults([])
-       
-      }
-    } catch (error) {
-      // setUserHint(error)
-    }
+try{
+  const res = await search(query)
+  if (res && res.length > 0) {
+    setResults(res)
+    setHasResult(true)
+  }
+  else {
+    setHasResult(false)
+    setResults([])
+  }
+}catch(e){
+  console.log(e)
+}
+    
   }
 
   const handelChnage = (query) => { setUserQuery(query) }
   useEffect(() => {
-    updateResults(userQuery.trim())
+    if (userQuery.length > 0 && typeof userQuery === "string") {
+      updateResults(userQuery.trim())
+    } else {
+      setHasResult(false)
+      setResults([])
+    }
+
   }, [userQuery])
 
   return (<div className="search-books">
@@ -66,14 +70,14 @@ const SearchPage = ({ updateBookShelf }) => {
             updateBookShelf={updateBookShelf} />
         })}
 
-      </ol> : updateUserHints()}
+      </ol> : updateUserHints(userHint )}
     </div>
   </div>)
 }
 
 
 SearchPage.propTypes = {
- 
+
   updateBookShelf: PropTypes.func.isRequired
 }
 

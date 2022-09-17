@@ -12,7 +12,7 @@ const Bookshelf = ({ shelfData, title, updateBookShelf }) => {
               return <Book
                key={book.id} 
                bookData={book} 
-              
+               bookshelf={book.shelf}
                updateBookShelf={updateBookShelf}/>
             })
           }

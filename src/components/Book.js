@@ -1,30 +1,30 @@
 
 import PropTypes from "prop-types"
 import nocover from '../imgs/nocover.png';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
-const Book = ({ bookData, updateBookShelf }) => {
-  const [selectedOptions, setSelectedOptions] = useState();
+const Book = ({ bookData, bookshelf ,updateBookShelf }) => {
+  const [selectedOption, setSelectedOption] = useState(bookshelf?bookshelf : "");
  
 
-
   const handleSelect = (event) => {
-    const selectedShelf = event.target.value
-    setSelectedOptions(selectedShelf);
-    updateBookShelf(bookData, selectedShelf)
-   
-    
-  }
+    setSelectedOption(event.target.value);}
 
   const renderImage = () => {
     const imageUrl = bookData.imageLinks.smallThumbnail;
-    if(imageUrl){
+    if(imageUrl !== undefined){
       return imageUrl
     }else{
-      return `${nocover}`
+      return nocover
     }
   }
 
+  useEffect(() => {
+    if(selectedOption !== ""){
+      updateBookShelf(bookData, selectedOption)
+    }
+   
+  }, [selectedOption, bookData, updateBookShelf ])
 
   return (
     <li>
@@ -40,9 +40,10 @@ const Book = ({ bookData, updateBookShelf }) => {
             }}
           ></div>
           <div className="book-shelf-changer">
-            <select value={selectedOptions} onChange={handleSelect}>
+            <select value={selectedOption}
+             onChange={(e) => handleSelect(e)}>
               <option value="none" disabled>Move to...</option>
-              <option value="none" disabled></option>
+             
             
               <option value="currentlyReading">
                 Currently Reading
@@ -65,7 +66,8 @@ const Book = ({ bookData, updateBookShelf }) => {
 
 Book.propTypes = {
   bookData : PropTypes.object.isRequired,
-  updateBookShelf: PropTypes.func.isRequired
+  updateBookShelf: PropTypes.func.isRequired,
+  bookshelf: PropTypes.string
 }
 
 export default Book;
