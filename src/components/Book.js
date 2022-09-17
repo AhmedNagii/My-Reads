@@ -4,20 +4,13 @@ import nocover from '../imgs/nocover.png';
 import { useState, useEffect } from 'react';
 
 const Book = ({ bookData, bookshelf ,updateBookShelf }) => {
-  const [selectedOption, setSelectedOption] = useState(bookshelf?bookshelf : "");
+  const [selectedOption, setSelectedOption] = useState(bookshelf);
  
-
-  const handleSelect = (event) => {
-    setSelectedOption(event.target.value);}
-
-  const renderImage = () => {
-    const imageUrl = bookData.imageLinks.smallThumbnail;
-    if(imageUrl !== undefined){
-      return imageUrl
-    }else{
-      return nocover
-    }
-  }
+  
+    const imageUrl =
+     bookData?.imageLinks?.smallThumbnail || nocover
+    
+ 
 
   useEffect(() => {
     if(selectedOption !== ""){
@@ -36,12 +29,12 @@ const Book = ({ bookData, bookshelf ,updateBookShelf }) => {
               width: 128,
               height: 193,
               backgroundImage:
-                `URL(${renderImage()})`,
+                `URL(${imageUrl})`,
             }}
           ></div>
           <div className="book-shelf-changer">
             <select value={selectedOption}
-             onChange={(e) => handleSelect(e)}>
+             onChange={(e) =>  setSelectedOption(e.target.value)}>
               <option value="none" disabled>Move to...</option>
              
             

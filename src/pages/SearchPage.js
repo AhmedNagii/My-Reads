@@ -42,12 +42,13 @@ try{
   const handelChnage = (query) => { setUserQuery(query) }
   useEffect(() => {
     if (userQuery.length > 0 && typeof userQuery === "string") {
+      console.log(userQuery.trim())
       updateResults(userQuery.trim())
     } else {
       setHasResult(false)
       setResults([])
     }
-
+console.log(results)
   }, [userQuery])
 
   return (<div className="search-books">
@@ -66,8 +67,11 @@ try{
 
       {hasResult ? <ol className="books-grid">
         {results.map((book) => {
-          return <Book key={book.id} bookData={book}
-            updateBookShelf={updateBookShelf} />
+          return <Book
+          key={book.id} 
+          bookData={book} 
+          bookshelf={book.shelf?book.shelf:"none"}
+          updateBookShelf={updateBookShelf} />
         })}
 
       </ol> : updateUserHints(userHint )}
