@@ -15,41 +15,37 @@ const SearchPage = ({ updateBookShelf }) => {
   const userHint = userQuery === "" ? "Type something" : 'No results found'
 
   const updateUserHints = (message) => {
-   
-     
+
+
     return <h1 className="no-results">{message}</h1>
   }
 
 
 
   const updateResults = async (query) => {
-try{
-  const res = await search(query)
-  if (res && res.length > 0) {
-    setResults(res)
-    setHasResult(true)
-  }
-  else {
-    setHasResult(false)
-    setResults([])
-  }
-}catch(e){
-  console.log(e)
-}
-    
+    try {
+      const res = await search(query)
+      if (res && res.length > 0) {
+        setResults(res)
+        setHasResult(true)
+      }
+      else {
+        setHasResult(false)
+        setResults([])
+      }
+    } catch (e) {
+      console.log(e)
+    }
+
   }
 
   const handelChnage = (query) => { setUserQuery(query) }
   useEffect(() => {
     if (userQuery.length > 0 && typeof userQuery === "string") {
-      console.log(userQuery.trim())
       updateResults(userQuery.trim())
-    } else {
-      setHasResult(false)
-      setResults([])
     }
-console.log(results)
-  }, [userQuery])
+
+  }, [userQuery, results])
 
   return (<div className="search-books">
     <div className="search-books-bar">
@@ -68,13 +64,13 @@ console.log(results)
       {hasResult ? <ol className="books-grid">
         {results.map((book) => {
           return <Book
-          key={book.id} 
-          bookData={book} 
-          bookshelf={book.shelf?book.shelf:"none"}
-          updateBookShelf={updateBookShelf} />
+            key={book.id}
+            bookData={book}
+            bookshelf={book.shelf ? book.shelf : "none"}
+            updateBookShelf={updateBookShelf} />
         })}
 
-      </ol> : updateUserHints(userHint )}
+      </ol> : updateUserHints(userHint)}
     </div>
   </div>)
 }
